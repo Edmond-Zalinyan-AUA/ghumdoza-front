@@ -1,9 +1,10 @@
+import LoginForm from "./components/LoginForm/LoginForm";
 
 
 function App() {
   return (
-    <div className="App">
-        <h1>Everything is cool</h1>
+    <div>
+        <LoginForm />
     </div>
   );
 }
