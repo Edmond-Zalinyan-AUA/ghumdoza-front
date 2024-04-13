@@ -1,7 +1,7 @@
 .wrapper {
     width: 420px;
     height: 450px;
-    background: transparent;
+    background: rgb(26, 78, 48);
     color: aliceblue;
     border-radius: 10px;
     display: flex;

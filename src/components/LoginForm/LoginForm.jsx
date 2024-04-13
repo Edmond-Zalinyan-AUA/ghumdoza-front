@@ -3,7 +3,7 @@ import './LoginForm.css';
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
 
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
 
     const [action, setAction] = useState('')
 
@@ -15,10 +15,15 @@ const LoginForm = () => {
         setAction('');
     };
 
+    const handleLogin = (e) => {
+        e.preventDefault();
+        onLogin(); // Call the onLogin function when login button is clicked
+    };
+
     return (
         <div className={`wrapper${action}`}>
             <div className='form-box login'>
-                <form action="">
+                <form onSubmit={handleLogin}>
                     <h1>Login</h1>
                     <div className="input-box">
                         <input type='text' placeholder='Username' required />
