@@ -2,12 +2,14 @@ import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import ToDoColumn from './ToDoColumn';
 import InProgressColumn from './InProgressColumn';
+import './Dashboard.css';
+
 
 const Dashboard = () => {
   // Sample ticket data
   const tickets = [
     { id: '1', title: 'Ticket 1', status: 'to-do' },
-    { id: '2', title: 'Ticket 2', status: 'in-progress' },
+    { id: '2', title: 'Ticket 2', status: 'to-do' },
     { id: '3', title: 'Ticket 3', status: 'done' },
     { id: '4', title: 'Ticket 4', status: 'canceled' },
     // Add more ticket data as needed
