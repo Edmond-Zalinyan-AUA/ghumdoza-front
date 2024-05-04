@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.png';
 import { CgProfile } from "react-icons/cg";
 import './HomePage.css';
 import Dashboard from '../DashBoard/Dashboard.jsx';
-
-
+import axios from "axios";
 
 
 const HomePage = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/project/list/1')
+      .then(response => {
+        setProjects(response.data.projectDtos);
+      })
+      .catch(error => console.error('Error fetching projects:', error));
+  }, []);
   return (
     <div className="homepage">
       <nav className="navbar">
@@ -19,9 +27,9 @@ const HomePage = () => {
             <li className="dropdown">
               <a>Projects</a>
               <div className="dropdown-content">
-                <a href="#">Project 1</a>
-                <a href="#">Project 2</a>
-                <a href="#">Project 3</a>
+                {projects.map(project => (
+                  <a key={project.code} href="#">{project.name}</a>
+                ))}
                 <hr />
                 <a href="#">Create New Project</a>
               </div>
