@@ -3,6 +3,7 @@ import './LoginForm.css';
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
 
+
 const LoginForm = ({ onLogin }) => {
 
     const [action, setAction] = useState('')
@@ -46,16 +47,20 @@ const LoginForm = ({ onLogin }) => {
                 <form action="">
                     <h1>Register</h1>
                     <div className="input-box">
+                        <input type='text' placeholder='First Name' required />
+                        <FaUser className='icon' />
+                    </div>
+                    <div className="input-box">
+                        <input type='text' placeholder='Last Name' required />
+                        <FaUser className='icon' />
+                    </div>
+                    <div className="input-box">
                         <input type='text' placeholder='Username' required />
                         <FaUser className='icon' />
                     </div>
                     <div className="input-box">
-                        <input type='text' placeholder='Email' required />
-                        <FaUser className='icon' />
-                    </div>
-                    <div className="input-box">
                         <input type='password' placeholder='Password' required />
-                        <FaEnvelope className='icon'/>
+                        <FaLock className='icon'/>
                     </div>
 
                     <button type="submit">Register</button>
