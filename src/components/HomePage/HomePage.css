@@ -107,7 +107,8 @@
 }
 
 /* Create Project Form styles */
-.create-project-form {
+.create-project-form,
+.create-ticket-form {
   background-color: white;
   padding: 20px;
   border: 1px solid #ccc;
@@ -121,13 +122,15 @@
   z-index: 1000;
 }
 
-.create-project-form h2 {
+.create-project-form h2,
+.create-ticket-form h2 {
   margin-bottom: 20px;
   font-size: 24px;
   color: #333;
 }
 
-.input-box-new-project {
+.input-box-new-project,
+.input-box-new-ticket {
   margin-bottom: 15px;
 }
 
@@ -138,12 +141,30 @@
   border: 1px solid seagreen;
 }
 
-.input-box-new-project input:focus {
+.input-box-new-ticket input,
+.input-box-new-ticket textarea,
+.input-box-new-ticket select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.input-box-new-ticket textarea {
+  height: 100px;
+  resize: none;
+}
+
+.input-box-new-project input:focus,
+.input-box-new-ticket input:focus {
   outline: none;
   border-color: seagreen;
 }
 
-.create-project-form button {
+.create-project-form button,
+.create-ticket-form button {
   background-color: seagreen;
   color: white;
   padding: 10px;
@@ -153,7 +174,8 @@
   width: 100%;
 }
 
-.create-project-form button:hover {
+.create-project-form button:hover,
+.create-ticket-form button:hover {
   background-color: darkgreen;
 }
 
