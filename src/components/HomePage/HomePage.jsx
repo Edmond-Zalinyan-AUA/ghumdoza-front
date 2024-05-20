@@ -10,7 +10,8 @@ import axios from "axios";
 const HomePage = ({ id, firstName, lastName }) => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [showCreateProjectForm, setShowCreateProjectForm] = useState(false);
   const [newProject, setNewProject] = useState({
     name: '',
     code: '',
@@ -27,12 +28,13 @@ const HomePage = ({ id, firstName, lastName }) => {
     console.log(`Clicked on project: ${project.name}`);
   };
 
-  const handleCloseClick = () => {
-    setShowCreateForm(false);
+  const handleCloseProjectClick = () => {
+    setShowCreateProjectForm(false);
+    resetCreateProjectForm();
   };
 
-  const handleCreateClick = () => {
-    setShowCreateForm(true);
+  const handleCreateProjectClick = () => {
+    setShowCreateProjectForm(true);
   };
 
   const handleInputChange = (e) => {
@@ -43,18 +45,27 @@ const HomePage = ({ id, firstName, lastName }) => {
     });
   };
 
-  const handleCreateSubmit = (e) => {
+  const resetCreateProjectForm = () => {
+    setNewProject({
+      code: '',
+      name: '',
+      creatorId: id,
+      description: ''
+    });
+  };
+
+  const handleCreateProjectSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8080/project/cresssate', newProject)
+    axios.put('http://localhost:8080/project/create', newProject)
       .then(response => {
         setProjects([...projects, response.data]);
-        setShowCreateForm(false);
+        setShowCreateProjectForm(false);
+        resetCreateProjectForm();
       })
       .catch(error => console.error('Error creating project:', error));
   };
 
   useEffect(() => {
-    console.log(firstName)
     axios.get('http://localhost:8080/project/list/' + id)
       .then(response => {
         setProjects(response.data.projectDtos);
@@ -88,9 +99,9 @@ const HomePage = ({ id, firstName, lastName }) => {
                 <a 
                   href="#" 
                   onMouseEnter={(e) => e.target.style.backgroundColor = 'seagreen'}
-                  onMouseLeave={(e) => !showCreateForm && (e.target.style.backgroundColor = '')}
-                  onClick={handleCreateClick}
-                  className={showCreateForm ? 'create-link-active' : ''}
+                  onMouseLeave={(e) => !showCreateProjectForm && (e.target.style.backgroundColor = '')}
+                  onClick={handleCreateProjectClick}
+                  className={showCreateProjectForm ? 'create-link-active' : ''}
                 >Create New Project</a>
               </div>
             </li>
@@ -117,10 +128,10 @@ const HomePage = ({ id, firstName, lastName }) => {
           <CgProfile className='profile-icon'/>
         </div>
       </nav>
-      {showCreateForm && (
+      {showCreateProjectForm && (
         <div className="create-project-form">
-          <FaTimes className="close-icon" onClick={handleCloseClick} />
-          <form onSubmit={handleCreateSubmit}>
+          <FaTimes className="close-icon" onClick={handleCloseProjectClick} />
+          <form onSubmit={handleCreateProjectSubmit}>
             <h2>Create New Project</h2>
             <div className="input-box-new-project">
               <input 
