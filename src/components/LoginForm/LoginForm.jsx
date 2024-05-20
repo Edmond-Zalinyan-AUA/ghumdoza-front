@@ -15,6 +15,8 @@ const LoginForm = ({ onLogin }) => {
         password: ''
     });
     const [loginData, setLoginData] = useState({
+        firstName: '',
+        lastName: '',
         username: '',
         password: ''
     });
@@ -31,9 +33,9 @@ const LoginForm = ({ onLogin }) => {
         e.preventDefault();
         try {
             console.log('Registering...');
-            const response = await axios.get('http://localhost:8080/user/login', loginData);
+            const response = await axios.put('http://localhost:8080/user/login', loginData);
             if (response.status === 200) {
-                onLogin(); 
+                onLogin(response.data.id, response.data.firstName, response.data.lastName); 
             }
         } catch (error) {
             console.error('Error logging in:', error);
@@ -56,9 +58,9 @@ const LoginForm = ({ onLogin }) => {
         e.preventDefault();
         try {
             console.log('Registering...');
-            const response = await axios.put('http://localhost:8080/user/register',registerData);
+            const response = await axios.put('http://localhost:8080/user/register', registerData);
             if (response.status === 200) {
-                onLogin(); // Call the onLogin function when register is successful
+                onLogin(response.data.id, response.data.firstName, response.data.lastName); 
             }
         } catch (error) {
             console.error('Error registering user:', error);
