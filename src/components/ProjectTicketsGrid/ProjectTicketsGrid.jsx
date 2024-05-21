@@ -53,7 +53,6 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         setEditableTicketId(ticketId);
         setEditableTicketData({
             ticketId: ticketToEdit.ticketId,
-            headline: ticketToEdit.headline,
             status: ticketToEdit.status,
             body: ticketToEdit.body,
             assigneeId: ticketToEdit.assigneeId
@@ -63,6 +62,15 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
     const handleSaveClick = (ticketId) => {
         // Handle save functionality here
         console.log('Saving ticket:', editableTicketData);
+        axios.post('http://localhost:8080/ticket/update', editableTicketData)
+            .then(response => {
+                if (response.status === 200) {
+                    const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
+                    setTicketsInGrid([...updatedTickets, response.data]);
+                }
+             })
+            .catch(error => console.error('Error editing ticket:', error));
+            
         // Reset the editable state
         setEditableTicketId(null);
         setEditableTicketData({});
