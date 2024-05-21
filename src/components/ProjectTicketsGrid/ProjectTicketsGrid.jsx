@@ -58,6 +58,11 @@ const ProjectTicketsGrid = ({ tickets }) => {
         setSearchQuery(null);
     };
 
+    const handleDeleteClick = (ticketId) => {
+        axios.delete('http://localhost:8080/ticket/delete/'+ ticketId)
+          .catch(error => console.error('Error creating ticket:', error));
+      };
+
     const handleInputChange = (field, value) => {
         setEditableTicketData(prevState => ({
             ...prevState,
@@ -129,8 +134,11 @@ const ProjectTicketsGrid = ({ tickets }) => {
                                 <p><strong>Body:</strong> {ticket.body}</p>
                             </>
                         )}
-                        <button onClick={() => editableTicketId === ticket.ticketId ? handleSaveClick(ticket.ticketId) : handleEditClick(ticket.ticketId)}>
+                        <button className="edit-button" onClick={() => editableTicketId === ticket.ticketId ? handleSaveClick(ticket.ticketId) : handleEditClick(ticket.ticketId)}>
                             {editableTicketId === ticket.ticketId ? 'Save' : 'Edit'}
+                        </button>
+                        <button className="delete-button" onClick={() => handleDeleteClick(ticket.ticketId)}>
+                            Delete
                         </button>
                     </div>
                 ))}

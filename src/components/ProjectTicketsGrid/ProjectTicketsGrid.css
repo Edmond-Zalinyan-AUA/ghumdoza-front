@@ -49,16 +49,24 @@
 }
 
 .ticket-card button {
-  background-color: seagreen;
   color: white;
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  margin-bottom: 10px;
 }
 
-.ticket-card button:hover {
+.edit-button {
+  background-color: seagreen;
+}
+
+.delete-button {
+  background-color: rgb(153, 0, 0);
+}
+
+.edit-button:hover {
   background-color: darkgreen;
 }
 
