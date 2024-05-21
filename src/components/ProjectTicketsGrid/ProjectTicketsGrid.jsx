@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectTicketsGrid.css';
 import axios from 'axios';
+import { FaSearch } from "react-icons/fa";
 
 const ProjectTicketsGrid = ({ tickets }) => {
     const [userMap, setUserMap] = useState({});
     const [editableTicketId, setEditableTicketId] = useState(null);
     const [editableTicketData, setEditableTicketData] = useState({});
+    const [showSearchForm, setShowSearchForm] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         const fetchUserInfo = async (assigneeId) => {
@@ -51,6 +54,8 @@ const ProjectTicketsGrid = ({ tickets }) => {
         // Reset the editable state
         setEditableTicketId(null);
         setEditableTicketData({});
+        setShowSearchForm(false);
+        setSearchQuery(null);
     };
 
     const handleInputChange = (field, value) => {
@@ -58,6 +63,21 @@ const ProjectTicketsGrid = ({ tickets }) => {
             ...prevState,
             [field]: value
         }));
+    };
+
+    const handleSearchClick = () => {
+        if (showSearchForm === true) {
+            setShowSearchForm(false);
+            setSearchQuery(null);
+        } else {
+            setShowSearchForm(true);
+        }
+    };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        console.log("Searching for user:", searchQuery);
+        // Integrate with the findbyusername API here
     };
 
     return (
@@ -69,11 +89,25 @@ const ProjectTicketsGrid = ({ tickets }) => {
                         {editableTicketId === ticket.ticketId ? (
                             <>
                                 <h3>{ticket.headline}</h3>
-                                <input
-                                    type="text"
-                                    value={userMap[ticket.assigneeId]?.firstName + ' ' + userMap[ticket.assigneeId]?.lastName}
-                                    readOnly
-                                />
+                                <div className="input-with-icon">
+                                    <input
+                                        type="text"
+                                        value={userMap[ticket.assigneeId]?.firstName + ' ' + userMap[ticket.assigneeId]?.lastName}
+                                        readOnly
+                                    />
+                                    <span className="search-icon" onClick={handleSearchClick}><FaSearch /></span>
+                                </div>
+                                {showSearchForm && (
+                                    <form onSubmit={handleSearchSubmit} className="search-form">
+                                        <input
+                                            type="text"
+                                            placeholder="Search by username"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />
+                                        <button type="submit">Search</button>
+                                    </form>
+                                )}
                                 <select
                                     value={editableTicketData.status}
                                     onChange={(e) => handleInputChange('status', e.target.value)}
