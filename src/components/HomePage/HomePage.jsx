@@ -302,7 +302,12 @@ const HomePage = ({ id, firstName, lastName }) => {
           </form>
         </div>
       )}
-      {showProjectTicketGrid && <ProjectTicketsGrid tickets={selectedProjectTasks} userAlltasks={tasks} setTicketsInMenu={setTasks} />} {/* Display Grid component if a project is selected */}
+      {showProjectTicketGrid && <ProjectTicketsGrid
+        project={projectOnTheGrid}
+        tickets={selectedProjectTasks}
+        userAlltasks={tasks}
+        setTicketsInMenu={setTasks}
+      />} {/* Display Grid component if a project is selected */}
 
     </div>
   );
