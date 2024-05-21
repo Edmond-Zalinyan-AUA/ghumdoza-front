@@ -35,7 +35,7 @@ const LoginForm = ({ onLogin }) => {
             console.log('Registering...');
             const response = await axios.put('http://localhost:8080/user/login', loginData);
             if (response.status === 200) {
-                onLogin(response.data.id, response.data.firstName, response.data.lastName); 
+                onLogin(response.data.id, response.data.firstName, response.data.lastName);
             }
         } catch (error) {
             console.error('Error logging in:', error);
@@ -60,7 +60,7 @@ const LoginForm = ({ onLogin }) => {
             console.log('Registering...');
             const response = await axios.put('http://localhost:8080/user/register', registerData);
             if (response.status === 200) {
-                onLogin(response.data.id, response.data.firstName, response.data.lastName); 
+                onLogin(response.data.id, response.data.firstName, response.data.lastName);
             }
         } catch (error) {
             console.error('Error registering user:', error);
@@ -78,7 +78,7 @@ const LoginForm = ({ onLogin }) => {
                     </div>
                     <div className="input-box">
                         <input type='password' name="password" placeholder='Password' value={loginData.password} onChange={handleInputChange} required />
-                        <FaLock className='icon'/>
+                        <FaLock className='icon' />
                     </div>
 
                     <button type="submit">Login</button>
@@ -87,9 +87,9 @@ const LoginForm = ({ onLogin }) => {
                         <p>Create a new account <a href="#" onClick={registerLink}>Register</a></p>
                     </div>
                 </form>
-             </div>
+            </div>
 
-             <div className='form-box register'>
+            <div className='form-box register'>
                 <form onSubmit={handleRegister}>
                     <h1>Register</h1>
                     <div className="input-box">
@@ -106,7 +106,7 @@ const LoginForm = ({ onLogin }) => {
                     </div>
                     <div className="input-box">
                         <input type='password' name="password" placeholder='Password' value={registerData.password} onChange={handleInputChange} required />
-                        <FaLock className='icon'/>
+                        <FaLock className='icon' />
                     </div>
 
                     <button type="submit">Register</button>
@@ -115,9 +115,9 @@ const LoginForm = ({ onLogin }) => {
                         <p>Already have an account <a href="#" onClick={loginLink}>Login</a></p>
                     </div>
                 </form>
-             </div>
-             
-             
+            </div>
+
+
 
         </div>
     );

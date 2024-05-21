@@ -130,12 +130,12 @@ const HomePage = ({ id, firstName, lastName }) => {
   const handleCreateTicketSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8080/ticket/create', newTicket)
-    .then(response => {
-      setTasks([...tasks, response.data]);
-      setShowCreateTicketForm(false);
-      resetCreateTicketForm();
-    })
-    .catch(error => console.error('Error creating ticket:', error));
+      .then(response => {
+        setTasks([...tasks, response.data]);
+        setShowCreateTicketForm(false);
+        resetCreateTicketForm();
+      })
+      .catch(error => console.error('Error creating ticket:', error));
   };
 
   useEffect(() => {
@@ -164,11 +164,11 @@ const HomePage = ({ id, firstName, lastName }) => {
             <li className="dropdown">
               <a>Projects</a>
               <div className="dropdown-content">
-              {projects.map(project => (
-                  <a 
-                    key={project.code} 
-                    href="#" 
-                    onMouseEnter={() => handleProjectHover(project)} 
+                {projects.map(project => (
+                  <a
+                    key={project.code}
+                    href="#"
+                    onMouseEnter={() => handleProjectHover(project)}
                     onMouseLeave={() => setSelectedProject(null)}
                     onClick={(e) => handleProjectClick(e, project)}
                     style={{ backgroundColor: selectedProject === project ? 'seagreen' : '' }}
@@ -177,8 +177,8 @@ const HomePage = ({ id, firstName, lastName }) => {
                   </a>
                 ))}
                 <hr />
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   onMouseLeave={(e) => !showCreateProjectForm && (e.target.style.backgroundColor = '')}
                   onClick={handleCreateProjectClick}
                   className={showCreateProjectForm ? 'create-link-active' : ''}
@@ -188,11 +188,11 @@ const HomePage = ({ id, firstName, lastName }) => {
             <li className="dropdown">
               <a>Tasks</a>
               <div className="dropdown-content">
-              {tasks.map(task => (
-                  <a 
-                    key={task.headline} 
-                    href="#" 
-                    onMouseEnter={() => handleTaskHover(task)} 
+                {tasks.map(task => (
+                  <a
+                    key={task.headline}
+                    href="#"
+                    onMouseEnter={() => handleTaskHover(task)}
                     onMouseLeave={() => setSelectedTask(null)}
                     onClick={() => handleTaskClick(task)}
                     style={{ backgroundColor: selectedTask === task ? 'seagreen' : '' }}
@@ -201,8 +201,8 @@ const HomePage = ({ id, firstName, lastName }) => {
                   </a>
                 ))}
                 <hr />
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   onMouseLeave={(e) => !showCreateTicketForm && (e.target.style.backgroundColor = '')}
                   onClick={handleCreateTicketClick}
                   className={showCreateTicketForm ? 'create-ticket-link-active' : ''}
@@ -213,7 +213,7 @@ const HomePage = ({ id, firstName, lastName }) => {
         </div>
         <div className="user-info">
           <span className="username">{firstName} {lastName}</span>
-          <CgProfile className='profile-icon'/>
+          <CgProfile className='profile-icon' />
         </div>
       </nav>
       {showCreateProjectForm && (
@@ -222,33 +222,33 @@ const HomePage = ({ id, firstName, lastName }) => {
           <form onSubmit={handleCreateProjectSubmit}>
             <h2>Create New Project</h2>
             <div className="input-box-new-project">
-              <input 
-                type="text" 
-                name="code" 
-                placeholder="Project Code" 
-                value={newProject.code} 
-                onChange={(e) => handleInputChange(e, 'project')} 
-                required 
-              />
-            </div>
-            <div className="input-box-new-project">
-              <input 
-                type="text" 
-                name="name" 
-                placeholder="Project Name" 
-                value={newProject.name} 
-                onChange={(e) => handleInputChange(e, 'project')} 
-                required 
-              />
-            </div>
-            <div className="input-box-new-project">
-              <input 
+              <input
                 type="text"
-                name="description" 
-                placeholder="Project Description" 
-                value={newProject.description} 
-                onChange={(e) => handleInputChange(e, 'project')} 
-                required 
+                name="code"
+                placeholder="Project Code"
+                value={newProject.code}
+                onChange={(e) => handleInputChange(e, 'project')}
+                required
+              />
+            </div>
+            <div className="input-box-new-project">
+              <input
+                type="text"
+                name="name"
+                placeholder="Project Name"
+                value={newProject.name}
+                onChange={(e) => handleInputChange(e, 'project')}
+                required
+              />
+            </div>
+            <div className="input-box-new-project">
+              <input
+                type="text"
+                name="description"
+                placeholder="Project Description"
+                value={newProject.description}
+                onChange={(e) => handleInputChange(e, 'project')}
+                required
               />
             </div>
             <button type="submit">Save</button>
@@ -261,30 +261,30 @@ const HomePage = ({ id, firstName, lastName }) => {
           <form onSubmit={handleCreateTicketSubmit}>
             <h2>Create New Ticket</h2>
             <div className="input-box-new-ticket">
-              <input 
-                type="text" 
-                name="headline" 
-                placeholder="Ticket Headline" 
-                value={newTicket.headline} 
-                onChange={(e) => handleInputChange(e, 'ticket')} 
-                required 
+              <input
+                type="text"
+                name="headline"
+                placeholder="Ticket Headline"
+                value={newTicket.headline}
+                onChange={(e) => handleInputChange(e, 'ticket')}
+                required
               />
             </div>
             <div className="input-box-new-ticket">
-              <textarea 
-                name="body" 
-                placeholder="Ticket Body" 
-                value={newTicket.body} 
-                onChange={(e) => handleInputChange(e, 'ticket')} 
-                required 
+              <textarea
+                name="body"
+                placeholder="Ticket Body"
+                value={newTicket.body}
+                onChange={(e) => handleInputChange(e, 'ticket')}
+                required
               />
             </div>
             <div className="input-box-new-ticket">
-              <select 
-                name="projectCode" 
-                value={newTicket.projectCode} 
-                onChange={(e) => handleInputChange(e, 'ticket')} 
-                required 
+              <select
+                name="projectCode"
+                value={newTicket.projectCode}
+                onChange={(e) => handleInputChange(e, 'ticket')}
+                required
               >
                 <option value="" disabled>Select Project</option>
                 {projects.map(project => (
