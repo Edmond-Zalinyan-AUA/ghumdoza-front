@@ -3,7 +3,7 @@ import './ProjectTicketsGrid.css';
 import axios from 'axios';
 import { FaSearch } from "react-icons/fa";
 
-const ProjectTicketsGrid = ({ tickets }) => {
+const ProjectTicketsGrid = ({ tickets, userAlltasks, setTicketsInMenu }) => {
 
     const [ticketsInGrid, setTicketsInGrid] = useState(tickets);
     const [userMap, setUserMap] = useState({});
@@ -15,7 +15,7 @@ const ProjectTicketsGrid = ({ tickets }) => {
     useEffect(() => {
         setTicketsInGrid(tickets);
     }, [tickets]);
-    
+
     useEffect(() => {
         const fetchUserInfo = async (assigneeId) => {
             try {
@@ -70,6 +70,7 @@ const ProjectTicketsGrid = ({ tickets }) => {
                 if (response.data === true) {
                     const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
                     setTicketsInGrid(updatedTickets);
+                    setTicketsInMenu(userAlltasks.filter(ticket => ticket.ticketId !== ticketId))
                 }
             })
             .catch(error => console.error('Error creating ticket:', error));
