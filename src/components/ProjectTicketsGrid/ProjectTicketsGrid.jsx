@@ -13,6 +13,10 @@ const ProjectTicketsGrid = ({ tickets }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
+        setTicketsInGrid(tickets);
+    }, [tickets]);
+    
+    useEffect(() => {
         const fetchUserInfo = async (assigneeId) => {
             try {
                 const response = await axios.get(`http://localhost:8080/user/${assigneeId}`);
