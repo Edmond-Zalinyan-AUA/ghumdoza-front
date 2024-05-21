@@ -4,8 +4,10 @@ import axios from 'axios';
 import { FaSearch } from "react-icons/fa";
 
 const ProjectTicketsGrid = ({ tickets }) => {
+
+    const [ticketsInGrid, setTicketsInGrid] = useState(tickets);
     const [userMap, setUserMap] = useState({});
-    const [editableTicketId, setEditableTicketId] = useState(null);
+    const [editableTicketId, setEditableTicketId] = useState("");
     const [editableTicketData, setEditableTicketData] = useState({});
     const [showSearchForm, setShowSearchForm] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -22,10 +24,10 @@ const ProjectTicketsGrid = ({ tickets }) => {
         };
 
         const fetchAllUserInfos = async () => {
-            const userInfoPromises = tickets.map(ticket => fetchUserInfo(ticket.assigneeId));
+            const userInfoPromises = ticketsInGrid.map(ticket => fetchUserInfo(ticket.assigneeId));
             const userInfos = await Promise.all(userInfoPromises);
 
-            const newUserMap = tickets.reduce((acc, ticket, index) => {
+            const newUserMap = ticketsInGrid.reduce((acc, ticket, index) => {
                 acc[ticket.assigneeId] = userInfos[index];
                 return acc;
             }, {});
@@ -34,10 +36,10 @@ const ProjectTicketsGrid = ({ tickets }) => {
         };
 
         fetchAllUserInfos();
-    }, [tickets]);
+    }, [ticketsInGrid]);
 
     const handleEditClick = (ticketId) => {
-        const ticketToEdit = tickets.find(ticket => ticket.ticketId === ticketId);
+        const ticketToEdit = ticketsInGrid.find(ticket => ticket.ticketId === ticketId);
         setEditableTicketId(ticketId);
         setEditableTicketData({
             ticketId: ticketToEdit.ticketId,
@@ -59,9 +61,15 @@ const ProjectTicketsGrid = ({ tickets }) => {
     };
 
     const handleDeleteClick = (ticketId) => {
-        axios.delete('http://localhost:8080/ticket/delete/'+ ticketId)
-          .catch(error => console.error('Error creating ticket:', error));
-      };
+        axios.delete('http://localhost:8080/ticket/delete/' + ticketId)
+            .then(response => {
+                if (response.data === true) {
+                    const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
+                    setTicketsInGrid(updatedTickets);
+                }
+            })
+            .catch(error => console.error('Error creating ticket:', error));
+    };
 
     const handleInputChange = (field, value) => {
         setEditableTicketData(prevState => ({
@@ -89,7 +97,7 @@ const ProjectTicketsGrid = ({ tickets }) => {
         <div className="grid-container">
             <h2>Tickets</h2>
             <div className="ticket-grid">
-                {tickets.map((ticket, index) => (
+                {ticketsInGrid.map((ticket, index) => (
                     <div key={index} className="ticket-card">
                         {editableTicketId === ticket.ticketId ? (
                             <>
