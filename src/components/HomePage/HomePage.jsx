@@ -6,15 +6,21 @@ import { GrTasks } from "react-icons/gr";
 import './HomePage.css';
 import { FaTimes } from 'react-icons/fa';
 import axios from "axios";
+import ProjectTicketsGrid from '../ProjectTicketsGrid/ProjectTicketsGrid'
 
 
 const HomePage = ({ id, firstName, lastName }) => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
+  const [selectedProjectTasks, setSelectedProjectTasks] = useState([]);
+
   const [tasks, setTasks] = useState([]);
+
   const [selectedTask, setSelectedTask] = useState([]);
+
   const [showCreateProjectForm, setShowCreateProjectForm] = useState(false);
   const [showCreateTicketForm, setShowCreateTicketForm] = useState(false);
+  const [showProjectTicketGrid, setShowProjectTicketGrid] = useState(false);
 
   const [newProject, setNewProject] = useState({
     name: '',
@@ -40,9 +46,16 @@ const HomePage = ({ id, firstName, lastName }) => {
     setSelectedTask(task);
   };
 
-  const handleProjectClick = (project) => {
-    // Trigger your API call here
-    console.log(`Clicked on project: ${project.name}`);
+  const handleProjectClick = (e, project) => {
+    e.preventDefault()
+    axios.get('http://localhost:8080/ticket/list/project/' + project.projectId)
+      .then(response => {
+        setSelectedProjectTasks(response.data.ticketDtos);
+        setSelectedProject(project);
+        setShowProjectTicketGrid(true);
+      })
+      .catch(error => console.error('Error fetching Tickets of the Project:', error));
+
   };
 
   const handleTaskClick = (task) => {
@@ -58,9 +71,6 @@ const HomePage = ({ id, firstName, lastName }) => {
       setShowCreateTicketForm(false);
       resetCreateTicketForm();
     }
-  };
-
-  const handleCloseTicketClick = () => {
   };
 
   const handleCreateProjectClick = () => {
@@ -160,7 +170,7 @@ const HomePage = ({ id, firstName, lastName }) => {
                     href="#" 
                     onMouseEnter={() => handleProjectHover(project)} 
                     onMouseLeave={() => setSelectedProject(null)}
-                    onClick={() => handleProjectClick(project)}
+                    onClick={(e) => handleProjectClick(e, project)}
                     style={{ backgroundColor: selectedProject === project ? 'seagreen' : '' }}
                   >
                     <SiJirasoftware /> [{project.code}] {project.name}
@@ -288,6 +298,8 @@ const HomePage = ({ id, firstName, lastName }) => {
           </form>
         </div>
       )}
+      {showProjectTicketGrid && <ProjectTicketsGrid tickets={selectedProjectTasks} />} {/* Display Grid component if a project is selected */}
+
     </div>
   );
 };
