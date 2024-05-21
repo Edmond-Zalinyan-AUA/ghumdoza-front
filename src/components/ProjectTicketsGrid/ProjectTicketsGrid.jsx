@@ -54,13 +54,7 @@ const ProjectTicketsGrid = ({ tickets }) => {
     };
 
     const handleDeleteClick = (ticketId) => {
-        // e.preventDefault();
         axios.delete('http://localhost:8080/ticket/delete/'+ ticketId)
-          .then(response => {
-            // setTasks([...tasks, response.data]);
-            // setShowCreateTicketForm(false);
-            // resetCreateTicketForm();
-          })
           .catch(error => console.error('Error creating ticket:', error));
       };
 
