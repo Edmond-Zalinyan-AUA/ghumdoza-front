@@ -13,7 +13,7 @@ const HomePage = ({ id, firstName, lastName }) => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
   const [selectedProjectTasks, setSelectedProjectTasks] = useState([]);
-
+  const [projectOnTheGrid, setProjectOnTheGrid] = useState([]);
   const [tasks, setTasks] = useState([]);
 
   const [selectedTask, setSelectedTask] = useState([]);
@@ -51,6 +51,7 @@ const HomePage = ({ id, firstName, lastName }) => {
     axios.get('http://localhost:8080/ticket/list/project/' + project.projectId)
       .then(response => {
         setSelectedProjectTasks(response.data.ticketDtos);
+        setProjectOnTheGrid(project);
         setSelectedProject(project);
         setShowProjectTicketGrid(true);
       })
@@ -132,6 +133,9 @@ const HomePage = ({ id, firstName, lastName }) => {
     axios.post('http://localhost:8080/ticket/create', newTicket)
       .then(response => {
         setTasks([...tasks, response.data]);
+        if (response.data.projectId == projectOnTheGrid.projectId) {
+          setSelectedProjectTasks([...tasks, response.data]);
+        }
         setShowCreateTicketForm(false);
         resetCreateTicketForm();
       })
