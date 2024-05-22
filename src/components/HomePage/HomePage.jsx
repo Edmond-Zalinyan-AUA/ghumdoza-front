@@ -9,7 +9,7 @@ import axios from "axios";
 import ProjectTicketsGrid from '../ProjectTicketsGrid/ProjectTicketsGrid'
 
 
-const HomePage = ({ id, firstName, lastName }) => {
+const HomePage = ({ id, firstName, lastName, onLogout }) => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
   const [selectedProjectTasks, setSelectedProjectTasks] = useState([]);
@@ -222,6 +222,7 @@ const HomePage = ({ id, firstName, lastName }) => {
         <div className="user-info">
           <span className="username">{firstName} {lastName}</span>
           <CgProfile className='profile-icon' />
+          <button onClick={onLogout} className="logout-button">Logout</button>
         </div>
       </nav>
       {showCreateProjectForm && (
