@@ -68,9 +68,9 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                     const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
                     setTicketsInGrid([...updatedTickets, response.data]);
                 }
-             })
+            })
             .catch(error => console.error('Error editing ticket:', error));
-            
+
         // Reset the editable state
         setEditableTicketId(null);
         setEditableTicketData({});
@@ -188,6 +188,9 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             <div className="participant-container">
                 <h2>Participants</h2>
                 <br />
+                <button className="add-participant-button" onClick={() => { }}>
+                    Add participant
+                </button>
                 <div className="participant-grid">
                     {participants.map((participant, index) => (
                         <div key={index} className="participant-card">

@@ -81,7 +81,8 @@
   border-radius: 4px;
 }
 
-.ticket-card button {
+.ticket-card button,
+.participant-container button {
   color: white;
   padding: 10px;
   border: none;
@@ -91,7 +92,8 @@
   margin-bottom: 10px;
 }
 
-.edit-button {
+.edit-button,
+.add-participant-button {
   background-color: seagreen;
 }
 
@@ -99,7 +101,9 @@
   background-color: rgb(153, 0, 0);
 }
 
-.edit-button:hover {
+.edit-button:hover,
+.add-participant-button:hover,
+.search-form button:hover  {
   background-color: darkgreen;
 }
 
@@ -144,8 +148,4 @@
   background-color: seagreen;
   color: white;
   cursor: pointer;
-}
-
-.search-form button:hover {
-  background-color: darkgreen;
 }
