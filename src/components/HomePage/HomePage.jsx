@@ -38,6 +38,10 @@ const HomePage = ({ id, firstName, lastName }) => {
     status: ''
   });
 
+  useEffect(() => {
+    setTasks(tasks);
+  }, [tasks]);
+
   const handleProjectHover = (project) => {
     setSelectedProject(project);
   };
@@ -134,7 +138,7 @@ const HomePage = ({ id, firstName, lastName }) => {
       .then(response => {
         setTasks([...tasks, response.data]);
         if (response.data.projectId == projectOnTheGrid.projectId) {
-          setSelectedProjectTasks([...tasks, response.data]);
+          setSelectedProjectTasks([...selectedProjectTasks, response.data]);
         }
         setShowCreateTicketForm(false);
         resetCreateTicketForm();

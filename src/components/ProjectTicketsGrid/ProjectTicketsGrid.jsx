@@ -6,7 +6,6 @@ import { FaSearch } from "react-icons/fa";
 const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }) => {
 
     const [ticketsInGrid, setTicketsInGrid] = useState(tickets);
-    const [projectInGrid, setprojectInGrid] = useState(project);
     const [participants, setParticipants] = useState([]);
     const [userMap, setUserMap] = useState({});
     const [editableTicketId, setEditableTicketId] = useState("");
@@ -117,15 +116,18 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         axios.get('http://localhost:8080/project/participants/' + project.projectId)
             .then(response => {
                 setParticipants(response.data);
-                console.log(response.data);
-                console.log("gggggggggggg");
-                console.log(participants);
             })
             .catch(error => console.error('Error fetching tickets:', error));
     }, [project]);
 
     return (
         <div>
+            <div className="project-headline">
+                <h1>{'[' + project.code + '] - ' + project.name}</h1>
+                <br />
+                <div className="participant-grid">
+                </div>
+            </div>
             <div className="ticket-container">
                 <h2>Tickets</h2>
                 <br />
