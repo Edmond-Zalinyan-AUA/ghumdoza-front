@@ -41,7 +41,7 @@ const LoginForm = ({ onLogin }) => {
                 }
             })
             .catch(error => {
-                if (error.response.status === 404 || error.response.status == 401) {
+                if (error.response.status === 404 || error.response.status === 401) {
                     setIsWrongCredentials(true);
                 }
             });
@@ -95,7 +95,7 @@ const LoginForm = ({ onLogin }) => {
                     <button type="submit">Login</button>
 
                     <div className="register-link">
-                        <p>Create a new account <a href="#" onClick={registerLink}>Register</a></p>
+                        <p>Create a new account <a href="register" onClick={registerLink}>Register</a></p>
                     </div>
                 </form>
             </div >
@@ -126,7 +126,7 @@ const LoginForm = ({ onLogin }) => {
                     <button type="submit">Register</button>
 
                     <div className="login-link">
-                        <p>Already have an account <a href="#" onClick={loginLink}>Login</a></p>
+                        <p>Already have an account <a href="login" onClick={loginLink}>Login</a></p>
                     </div>
                 </form>
             </div>

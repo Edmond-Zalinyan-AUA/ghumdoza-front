@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectTicketsGrid.css';
 import axios from 'axios';
-import { FaSearch } from "react-icons/fa";
 
 const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }) => {
 
@@ -96,7 +95,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                 console.log(response.data)
                 setParticipants(response.data)
             })
-            .catch(error => console.error('Error creating ticket:', error));
+            .catch(error => console.error('Error creating user:', error));
     };
 
     const handleTicketEditInputChange = (field, value) => {
