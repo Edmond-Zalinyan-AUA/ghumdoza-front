@@ -187,7 +187,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                 <h2>Participants</h2>
                 <br />
                 {
-                    <form onSubmit={addParticipant} className="search-form">
+                    <form className="search-form">
                         <input
                             type="text"
                             placeholder="Search by username to add"
@@ -204,7 +204,9 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                             <option value="DESIGNER">Designer</option>
                             <option value="MANAGER">Manger</option>
                         </select>
-                        <button className='add-participant-button' type="submit">Add to Project</button>
+                        <button className='add-participant-button'
+                            type="button"
+                            onClick={() => addParticipant()}>Add to Project</button>
                     </form>
                 }
                 <br />
