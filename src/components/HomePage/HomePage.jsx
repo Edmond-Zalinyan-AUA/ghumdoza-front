@@ -307,6 +307,7 @@ const HomePage = ({ id, firstName, lastName }) => {
         </div>
       )}
       {showProjectTicketGrid && <ProjectTicketsGrid
+        userId={id}
         project={projectOnTheGrid}
         tickets={selectedProjectTasks}
         userAlltasks={tasks}

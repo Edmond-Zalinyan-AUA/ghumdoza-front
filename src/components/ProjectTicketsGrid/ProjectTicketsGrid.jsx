@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ProjectTicketsGrid.css';
 import axios from 'axios';
 
-const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }) => {
+const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTicketsInMenu }) => {
 
     const [ticketsInGrid, setTicketsInGrid] = useState(tickets);
     const [participants, setParticipants] = useState([]);
@@ -13,6 +13,10 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         username: '',
         projectId: '',
         role: ''
+    });
+    const [participantRemoveRequest, setParticipantRemoveRequest] = useState({
+        userId: '',
+        projectId: '',
     });
     const [isNewParticipantFound, setIsNewParticipantFound] = useState(true);
     const [isNewParticipantRoleSelected, setIsNewParticipantRoleSelected] = useState(true);
@@ -64,12 +68,18 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
 
     const handleSaveClick = (ticketId) => {
         // Handle save functionality here
-        console.log('Saving ticket:', editableTicketData);
+        // console.log('Saving ticket:', editableTicketData);
         axios.post('http://localhost:8080/ticket/update', editableTicketData)
             .then(response => {
                 if (response.status === 200) {
                     const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
                     setTicketsInGrid([...updatedTickets, response.data]);
+                    if (editableTicketData.assigneeId == userId) {
+                        setTicketsInMenu([...userAlltasks, response.data].filter(t => t.assigneeId == userId));
+                    }
+                    else {
+                        setTicketsInMenu([...userAlltasks].filter(t => t.ticketId != response.data.ticketId));
+                    }
                 }
             })
             .catch(error => console.error('Error editing ticket:', error));
@@ -90,6 +100,20 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             })
             .catch(error => console.error('Error creating ticket:', error));
     };
+
+    const handleParticipantRemoveClick = (participantId) => {
+        participantRemoveRequest.projectId = project.projectId;
+        participantRemoveRequest.userId = participantId;
+        axios.delete('http://localhost:8080/project/participants/remove', {
+            data: participantRemoveRequest
+        }).then(response => {
+            setParticipants(response.data)
+            setIsNewParticipantFound(true);
+            setIsNewParticipantRoleSelected(true);
+        })
+            .catch(error => console.error('Error deleting participant:', error));
+    }
+
     const addParticipant = () => {
         newParticipantData.projectId = project.projectId;
         axios.post('http://localhost:8080/project/participants/add', newParticipantData)
@@ -241,6 +265,10 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                                     <p><strong>Role:</strong> {participant.role}</p>
                                 </>
                             )}
+                            <br />
+                            <button className="delete-button" onClick={() => handleParticipantRemoveClick(participant.user.id)}>
+                                Remove
+                            </button>
                         </div>
                     ))}
                 </div>
