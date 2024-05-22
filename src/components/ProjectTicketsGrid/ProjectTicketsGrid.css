@@ -1,3 +1,15 @@
+.project-headline {
+  padding: 20px;
+  background-color: #3a3449;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+}
+.project-headline h1{
+  color: #f9f9f9;
+  font-size: 50px;
+}
+
 .ticket-container {
   padding: 30px;
   background-color: #3a3449;
