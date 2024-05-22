@@ -202,3 +202,8 @@
 .close-icon:hover {
   color: seagreen;
 }
+.new-participant-error-message{
+  color:red;
+  margin-bottom: 10px;
+  text-align: left;
+}

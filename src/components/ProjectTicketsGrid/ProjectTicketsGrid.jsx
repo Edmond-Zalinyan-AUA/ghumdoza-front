@@ -15,6 +15,8 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         projectId: '',
         role: ''
     });
+    const [isNewParticipantFound, setIsNewParticipantFound] = useState(true);
+    const [isNewParticipantRoleSelected, setIsNewParticipantRoleSelected] = useState(true);
 
     useEffect(() => {
         setTicketsInGrid(tickets);
@@ -95,8 +97,19 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             .then(response => {
                 console.log(response.data)
                 setParticipants(response.data)
+                setIsNewParticipantFound(true);
+                setIsNewParticipantRoleSelected(true);
             })
-            .catch(error => console.error('Error creating ticket:', error));
+            .catch(error => {
+                console.log(error.response.status)
+                if (error.response.status == 404) {
+                    setIsNewParticipantFound(false);
+                    setIsNewParticipantRoleSelected(true);
+                }
+                if (error.response.status == 400) {
+                    setIsNewParticipantRoleSelected(false);
+                }
+            });
     };
 
     const handleTicketEditInputChange = (field, value) => {
@@ -118,8 +131,10 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         axios.get('http://localhost:8080/project/participants/' + project.projectId)
             .then(response => {
                 setParticipants(response.data);
+                setIsNewParticipantFound(true);
+                setIsNewParticipantRoleSelected(true);
             })
-            .catch(error => console.error('Error fetching tickets:', error));
+            .catch(error => console.error('Error fetching participants:', error));
     }, [project]);
 
     return (
@@ -209,6 +224,15 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                             onClick={() => addParticipant()}>Add to Project</button>
                     </form>
                 }
+                <br />
+                {(!isNewParticipantFound) &&
+                    < div className="new-participant-error-message">
+                        <p>User with that username not found</p>
+                    </div>}
+                {(!isNewParticipantRoleSelected) &&
+                    < div className="new-participant-error-message">
+                        <p>Specify the role</p>
+                    </div>}
                 <br />
                 <div className="participant-grid">
                     {participants.map((participant, index) => (
