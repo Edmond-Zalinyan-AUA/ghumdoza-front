@@ -10,8 +10,11 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
     const [userMap, setUserMap] = useState({});
     const [editableTicketId, setEditableTicketId] = useState("");
     const [editableTicketData, setEditableTicketData] = useState({});
-    const [showSearchForm, setShowSearchForm] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [newParticipantData, setNewParticipantData] = useState({
+        username: '',
+        projectId: project.projectId,
+        role: ''
+    });
 
     useEffect(() => {
         setTicketsInGrid(tickets);
@@ -73,8 +76,6 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         // Reset the editable state
         setEditableTicketId(null);
         setEditableTicketData({});
-        setShowSearchForm(false);
-        setSearchQuery(null);
     };
 
     const handleDeleteClick = (ticketId) => {
@@ -88,27 +89,27 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             })
             .catch(error => console.error('Error creating ticket:', error));
     };
+    const addParticipant = () => {
+        axios.post('http://localhost:8080/project/participants/add', newParticipantData)
+            .then(response => {
+                console.log(response.data)
+                setParticipants(response.data)
+            })
+            .catch(error => console.error('Error creating ticket:', error));
+    };
 
-    const handleInputChange = (field, value) => {
+    const handleTicketEditInputChange = (field, value) => {
         setEditableTicketData(prevState => ({
             ...prevState,
             [field]: value
         }));
     };
 
-    const handleSearchClick = () => {
-        if (showSearchForm === true) {
-            setShowSearchForm(false);
-            setSearchQuery(null);
-        } else {
-            setShowSearchForm(true);
-        }
-    };
-
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        console.log("Searching for user:", searchQuery);
-        // Integrate with the findbyusername API here
+    const handleAddParticipantInputChange = (field, value) => {
+        setNewParticipantData(prevState => ({
+            ...prevState,
+            [field]: value
+        }));
     };
 
     useEffect(() => {
@@ -140,7 +141,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                                     <select
                                         name="assignee"
                                         value={editableTicketData.assigneeId}
-                                        onChange={(e) => handleInputChange('assigneeId', e.target.value,)}
+                                        onChange={(e) => handleTicketEditInputChange('assigneeId', e.target.value,)}
                                         required
                                     >
                                         <option value="" disabled>Select assignee</option>
@@ -152,7 +153,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                                     </select>
                                     <select
                                         value={editableTicketData.status}
-                                        onChange={(e) => handleInputChange('status', e.target.value)}
+                                        onChange={(e) => handleTicketEditInputChange('status', e.target.value)}
                                     >
                                         <option value="TO_DO">TO_DO</option>
                                         <option value="IN_PROGRESS">IN_PROGRESS</option>
@@ -160,7 +161,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                                     </select>
                                     <textarea
                                         value={editableTicketData.body}
-                                        onChange={(e) => handleInputChange('body', e.target.value)}
+                                        onChange={(e) => handleTicketEditInputChange('body', e.target.value)}
                                     />
                                 </>
                             ) : (
@@ -185,13 +186,23 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                 <h2>Participants</h2>
                 <br />
                 {
-                    <form onSubmit={handleSearchSubmit} className="search-form">
+                    <form onSubmit={addParticipant} className="search-form">
                         <input
                             type="text"
                             placeholder="Search by username to add"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            value={newParticipantData.username}
+                            onChange={(e) => handleAddParticipantInputChange('username', e.target.value)}
                         />
+                        <select
+                            value={newParticipantData.role}
+                            onChange={(e) => handleAddParticipantInputChange('role', e.target.value)}
+                        >
+                            <option value="" disabled>Select Role</option>
+                            <option value="DEV">Developer</option>
+                            <option value="QA">QA Specialist</option>
+                            <option value="DESIGNER">Designer</option>
+                            <option value="MANAGER">Manger</option>
+                        </select>
                         <button className='add-participant-button' type="submit">Add to Project</button>
                     </form>
                 }
