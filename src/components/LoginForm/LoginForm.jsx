@@ -41,7 +41,12 @@ const LoginForm = ({ onLogin }) => {
                 }
             })
             .catch(error => {
+<<<<<<< HEAD
                 if (error.response.status === 404 || error.response.status === 401) {
+=======
+                if (error != null && error.response != null
+                    && (error.response.status === 404 || error.response.status == 401)) {
+>>>>>>> 4a39a3fbaf1878985aa1a3622de03f8bf1104dbf
                     setIsWrongCredentials(true);
                 }
             });
