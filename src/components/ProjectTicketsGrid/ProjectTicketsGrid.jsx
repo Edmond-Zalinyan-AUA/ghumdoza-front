@@ -137,25 +137,19 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                             {editableTicketId === ticket.ticketId ? (
                                 <>
                                     <h3>{ticket.headline}</h3>
-                                    <div className="input-with-icon">
-                                        <input
-                                            type="text"
-                                            value={userMap[ticket.assigneeId]?.firstName + ' ' + userMap[ticket.assigneeId]?.lastName}
-                                            readOnly
-                                        />
-                                        <span className="search-icon" onClick={handleSearchClick}><FaSearch /></span>
-                                    </div>
-                                    {showSearchForm && (
-                                        <form onSubmit={handleSearchSubmit} className="search-form">
-                                            <input
-                                                type="text"
-                                                placeholder="Search by username"
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                            />
-                                            <button type="submit">Search</button>
-                                        </form>
-                                    )}
+                                    <select
+                                        name="assignee"
+                                        value={editableTicketData.assigneeId}
+                                        onChange={(e) => handleInputChange('assigneeId', e.target.value,)}
+                                        required
+                                    >
+                                        <option value="" disabled>Select assignee</option>
+                                        {participants.map(participant => (
+                                            <option value={participant.user.id}>
+                                                {participant.user.firstName} {participant.user.lastName}
+                                            </option>
+                                        ))}
+                                    </select>
                                     <select
                                         value={editableTicketData.status}
                                         onChange={(e) => handleInputChange('status', e.target.value)}
@@ -190,9 +184,18 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             <div className="participant-container">
                 <h2>Participants</h2>
                 <br />
-                <button className="add-participant-button" onClick={() => { }}>
-                    Add participant
-                </button>
+                {showSearchForm && (
+                    <form onSubmit={handleSearchSubmit} className="search-form">
+                        <input
+                            type="text"
+                            placeholder="Search by username to add"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <button type="submit">Search</button>
+                    </form>
+                )}
+                <br />
                 <div className="participant-grid">
                     {participants.map((participant, index) => (
                         <div key={index} className="participant-card">
