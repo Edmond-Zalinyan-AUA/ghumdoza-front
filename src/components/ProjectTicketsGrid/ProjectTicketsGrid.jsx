@@ -184,7 +184,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             <div className="participant-container">
                 <h2>Participants</h2>
                 <br />
-                {showSearchForm && (
+                {
                     <form onSubmit={handleSearchSubmit} className="search-form">
                         <input
                             type="text"
@@ -192,9 +192,9 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                        <button type="submit">Search</button>
+                        <button className='add-participant-button' type="submit">Add to Project</button>
                     </form>
-                )}
+                }
                 <br />
                 <div className="participant-grid">
                     {participants.map((participant, index) => (

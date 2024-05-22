@@ -108,7 +108,11 @@
 .add-participant-button {
   background-color: seagreen;
 }
-
+.add-participant-button{
+  max-width: 200px; 
+  min-width: 150px;
+  min-height: 40px;
+}
 .delete-button {
   background-color: rgb(153, 0, 0);
 }
@@ -141,6 +145,8 @@
 
 .search-form {
   display: flex;
+  max-width: 50px;
+  max-height: 40px;
   gap: 10px;
   margin-top: 10px;
 }
