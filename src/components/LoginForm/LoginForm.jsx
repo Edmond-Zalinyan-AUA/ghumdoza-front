@@ -20,26 +20,31 @@ const LoginForm = ({ onLogin }) => {
         username: '',
         password: ''
     });
+    const [isWrongCredentials, setIsWrongCredentials] = useState(false);
 
     const registerLink = () => {
         setAction(' active');
+        setIsWrongCredentials(false);
     };
 
     const loginLink = () => {
         setAction('');
+        setIsWrongCredentials(false);
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        try {
-            console.log('Registering...');
-            const response = await axios.put('http://localhost:8080/user/login', loginData);
-            if (response.status === 200) {
-                onLogin(response.data.id, response.data.firstName, response.data.lastName);
-            }
-        } catch (error) {
-            console.error('Error logging in:', error);
-        }
+        axios.put('http://localhost:8080/user/login', loginData)
+            .then(response => {
+                if (response.status === 200) {
+                    onLogin(response.data.id, response.data.firstName, response.data.lastName);
+                }
+            })
+            .catch(error => {
+                if (error.response.status === 404 || error.response.status == 401) {
+                    setIsWrongCredentials(true);
+                }
+            });
     };
 
     const handleInputChange = (e) => {
@@ -56,15 +61,18 @@ const LoginForm = ({ onLogin }) => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        try {
-            console.log('Registering...');
-            const response = await axios.put('http://localhost:8080/user/register', registerData);
-            if (response.status === 200) {
-                onLogin(response.data.id, response.data.firstName, response.data.lastName);
-            }
-        } catch (error) {
-            console.error('Error registering user:', error);
-        }
+
+        axios.put('http://localhost:8080/user/register', registerData)
+            .then(response => {
+                if (response.status === 200) {
+                    onLogin(response.data.id, response.data.firstName, response.data.lastName);
+                }
+            })
+            .catch(error => {
+                if (error.response.status === 400) {
+                    setIsWrongCredentials(true);
+                }
+            });
     };
 
     return (
@@ -80,14 +88,17 @@ const LoginForm = ({ onLogin }) => {
                         <input type='password' name="password" placeholder='Password' value={loginData.password} onChange={handleInputChange} required />
                         <FaLock className='icon' />
                     </div>
-
+                    {(isWrongCredentials) &&
+                        < div className="wrong-credentials-warning">
+                            <p>Wrong Credentials</p>
+                        </div>}
                     <button type="submit">Login</button>
 
                     <div className="register-link">
                         <p>Create a new account <a href="#" onClick={registerLink}>Register</a></p>
                     </div>
                 </form>
-            </div>
+            </div >
 
             <div className='form-box register'>
                 <form onSubmit={handleRegister}>
@@ -108,7 +119,10 @@ const LoginForm = ({ onLogin }) => {
                         <input type='password' name="password" placeholder='Password' value={registerData.password} onChange={handleInputChange} required />
                         <FaLock className='icon' />
                     </div>
-
+                    {(isWrongCredentials) &&
+                        < div className="wrong-credentials-warning">
+                            <p>Username Already Taken</p>
+                        </div>}
                     <button type="submit">Register</button>
 
                     <div className="login-link">
@@ -119,7 +133,7 @@ const LoginForm = ({ onLogin }) => {
 
 
 
-        </div>
+        </div >
     );
 };
 

@@ -106,6 +106,12 @@
     margin: 20px 0 15px;
 }
 
+.wrong-credentials-warning{
+    color:red;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 .register-link p a {
     color: #fff;
     text-decoration: none;
