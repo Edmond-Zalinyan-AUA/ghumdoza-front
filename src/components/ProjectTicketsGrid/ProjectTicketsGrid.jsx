@@ -20,6 +20,8 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
     });
     const [isNewParticipantFound, setIsNewParticipantFound] = useState(true);
     const [isNewParticipantRoleSelected, setIsNewParticipantRoleSelected] = useState(true);
+    const [participantDeletionAllowed, setParticipantDeletionAllowed] = useState(true);
+
 
     useEffect(() => {
         setTicketsInGrid(tickets);
@@ -110,8 +112,15 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
             setParticipants(response.data)
             setIsNewParticipantFound(true);
             setIsNewParticipantRoleSelected(true);
+            setParticipantDeletionAllowed(true);
         })
-            .catch(error => console.error('Error deleting participant:', error));
+            .catch(error => {
+                if (error.response.status == 400) {
+                    setParticipantDeletionAllowed(false);
+                    setIsNewParticipantFound(true);
+                    setIsNewParticipantRoleSelected(true);
+                }
+            });
     }
 
     const addParticipant = () => {
@@ -121,14 +130,17 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
                 setParticipants(response.data)
                 setIsNewParticipantFound(true);
                 setIsNewParticipantRoleSelected(true);
+                setParticipantDeletionAllowed(true);
             })
             .catch(error => {
                 if (error.response.status === 404) {
                     setIsNewParticipantFound(false);
                     setIsNewParticipantRoleSelected(true);
+                    setParticipantDeletionAllowed(true);
                 }
                 if (error.response.status === 400) {
                     setIsNewParticipantRoleSelected(false);
+                    setParticipantDeletionAllowed(true);
                 }
             });
     };
@@ -252,6 +264,10 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
                 {(!isNewParticipantRoleSelected) &&
                     < div className="new-participant-error-message">
                         <p>Specify the role</p>
+                    </div>}
+                {(!participantDeletionAllowed) &&
+                    < div className="new-participant-error-message">
+                        <p>Participant has tickets, cannot be removed</p>
                     </div>}
                 <br />
                 <div className="participant-grid">
