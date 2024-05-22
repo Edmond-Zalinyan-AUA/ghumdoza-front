@@ -94,7 +94,6 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
         newParticipantData.projectId = project.projectId;
         axios.post('http://localhost:8080/project/participants/add', newParticipantData)
             .then(response => {
-                console.log(response.data)
                 setParticipants(response.data)
                 setIsNewParticipantFound(true);
                 setIsNewParticipantRoleSelected(true);
@@ -103,7 +102,6 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             .catch(error => console.error('Error creating user:', error));
 =======
             .catch(error => {
-                console.log(error.response.status)
                 if (error.response.status == 404) {
                     setIsNewParticipantFound(false);
                     setIsNewParticipantRoleSelected(true);
@@ -130,7 +128,6 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
     };
 
     useEffect(() => {
-        console.log(project);
         axios.get('http://localhost:8080/project/participants/' + project.projectId)
             .then(response => {
                 setParticipants(response.data);
