@@ -12,7 +12,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
     const [editableTicketData, setEditableTicketData] = useState({});
     const [newParticipantData, setNewParticipantData] = useState({
         username: '',
-        projectId: project.projectId,
+        projectId: '',
         role: ''
     });
 
@@ -90,6 +90,7 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
             .catch(error => console.error('Error creating ticket:', error));
     };
     const addParticipant = () => {
+        newParticipantData.projectId = project.projectId;
         axios.post('http://localhost:8080/project/participants/add', newParticipantData)
             .then(response => {
                 console.log(response.data)
