@@ -310,6 +310,7 @@ const HomePage = ({ id, firstName, lastName }) => {
         userId={id}
         project={projectOnTheGrid}
         tickets={selectedProjectTasks}
+        setTickets={setSelectedProjectTasks}
         userAlltasks={tasks}
         setTicketsInMenu={setTasks}
       />} {/* Display Grid component if a project is selected */}

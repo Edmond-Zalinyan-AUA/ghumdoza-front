@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './ProjectTicketsGrid.css';
 import axios from 'axios';
 
-const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTicketsInMenu }) => {
+const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks, setTicketsInMenu }) => {
 
-    const [ticketsInGrid, setTicketsInGrid] = useState(tickets);
     const [participants, setParticipants] = useState([]);
     const [userMap, setUserMap] = useState({});
     const [editableTicketId, setEditableTicketId] = useState("");
@@ -24,7 +23,7 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
 
 
     useEffect(() => {
-        setTicketsInGrid(tickets);
+        setTickets(tickets);
     }, [tickets]);
 
     useEffect(() => {
@@ -43,10 +42,10 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
         };
 
         const fetchAllUserInfos = async () => {
-            const userInfoPromises = ticketsInGrid.map(ticket => fetchUserInfo(ticket.assigneeId));
+            const userInfoPromises = tickets.map(ticket => fetchUserInfo(ticket.assigneeId));
             const userInfos = await Promise.all(userInfoPromises);
 
-            const newUserMap = ticketsInGrid.reduce((acc, ticket, index) => {
+            const newUserMap = tickets.reduce((acc, ticket, index) => {
                 acc[ticket.assigneeId] = userInfos[index];
                 return acc;
             }, {});
@@ -55,10 +54,10 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
         };
 
         fetchAllUserInfos();
-    }, [ticketsInGrid]);
+    }, [tickets]);
 
     const handleEditClick = (ticketId) => {
-        const ticketToEdit = ticketsInGrid.find(ticket => ticket.ticketId === ticketId);
+        const ticketToEdit = tickets.find(ticket => ticket.ticketId === ticketId);
         setEditableTicketId(ticketId);
         setEditableTicketData({
             ticketId: ticketToEdit.ticketId,
@@ -74,13 +73,13 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
         axios.post('http://localhost:8080/ticket/update', editableTicketData)
             .then(response => {
                 if (response.status === 200) {
-                    const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
-                    setTicketsInGrid([...updatedTickets, response.data]);
-                    if (editableTicketData.assigneeId == userId) {
-                        setTicketsInMenu([...userAlltasks, response.data].filter(t => t.assigneeId == userId));
+                    const updatedTickets = tickets.filter(ticket => ticket.ticketId !== ticketId);
+                    setTickets([...updatedTickets, response.data]);
+                    if (editableTicketData.assigneeId === userId) {
+                        setTicketsInMenu([...userAlltasks, response.data].filter(t => t.assigneeId === userId));
                     }
                     else {
-                        setTicketsInMenu([...userAlltasks].filter(t => t.ticketId != response.data.ticketId));
+                        setTicketsInMenu([...userAlltasks].filter(t => t.ticketId !== response.data.ticketId));
                     }
                 }
             })
@@ -95,8 +94,8 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
         axios.delete('http://localhost:8080/ticket/delete/' + ticketId)
             .then(response => {
                 if (response.data === true) {
-                    const updatedTickets = ticketsInGrid.filter(ticket => ticket.ticketId !== ticketId);
-                    setTicketsInGrid(updatedTickets);
+                    const updatedTickets = tickets.filter(ticket => ticket.ticketId !== ticketId);
+                    setTickets(updatedTickets);
                     setTicketsInMenu(userAlltasks.filter(ticket => ticket.ticketId !== ticketId))
                 }
             })
@@ -115,7 +114,7 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
             setParticipantDeletionAllowed(true);
         })
             .catch(error => {
-                if (error.response.status == 400) {
+                if (error.response.status === 400) {
                     setParticipantDeletionAllowed(false);
                     setIsNewParticipantFound(true);
                     setIsNewParticipantRoleSelected(true);
@@ -181,7 +180,7 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
                 <h2>Tickets</h2>
                 <br />
                 <div className="ticket-grid">
-                    {ticketsInGrid.map((ticket, index) => (
+                    {tickets.map((ticket, index) => (
                         <div key={index} className="ticket-card">
                             {editableTicketId === ticket.ticketId ? (
                                 <>
@@ -267,7 +266,7 @@ const ProjectTicketsGrid = ({ userId, project, tickets, userAlltasks, setTickets
                     </div>}
                 {(!participantDeletionAllowed) &&
                     < div className="new-participant-error-message">
-                        <p>Participant has tickets, cannot be removed</p>
+                        <p>Participant has tickets or is the creator, cannot be removed</p>
                     </div>}
                 <br />
                 <div className="participant-grid">
