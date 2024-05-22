@@ -98,19 +98,15 @@ const ProjectTicketsGrid = ({ project, tickets, userAlltasks, setTicketsInMenu }
                 setIsNewParticipantFound(true);
                 setIsNewParticipantRoleSelected(true);
             })
-<<<<<<< HEAD
-            .catch(error => console.error('Error creating user:', error));
-=======
             .catch(error => {
-                if (error.response.status == 404) {
+                if (error.response.status === 404) {
                     setIsNewParticipantFound(false);
                     setIsNewParticipantRoleSelected(true);
                 }
-                if (error.response.status == 400) {
+                if (error.response.status === 400) {
                     setIsNewParticipantRoleSelected(false);
                 }
             });
->>>>>>> 4a39a3fbaf1878985aa1a3622de03f8bf1104dbf
     };
 
     const handleTicketEditInputChange = (field, value) => {
