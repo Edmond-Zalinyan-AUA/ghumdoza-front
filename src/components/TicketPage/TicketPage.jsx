@@ -89,6 +89,20 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
             .catch(error => { console.log("error occured with AI: " + error) })
     };
 
+    const grammarCheckWithAi = () => {
+        handleTicketEditInputChange('body', 'Generating, please wait....');
+        axios.get('http://localhost:8080/openai/grammar',
+            {
+                params: { text: ticket.body },
+            })
+            .then(response => {
+                console.log(response);
+                handleTicketEditInputChange('body', response.data);
+                setAiSuggested(true);
+            })
+            .catch(error => { console.log("error occured with AI: " + error) })
+    };
+
     const undoAi = () => {
         setEditMode(true);
         setAiSuggested(false);
@@ -169,7 +183,10 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
                         {editMode ? 'Save' : 'Edit'}
                     </button>
                     {editMode ? (<button className="ticket-edit-button" onClick={() => enhanceWithAi()}>
-                        Enhance with AI
+                        AI Enhance
+                    </button>) : ''}
+                    {editMode ? (<button className="ticket-edit-button" onClick={() => grammarCheckWithAi()}>
+                        AI Grammar Check
                     </button>) : ''}
                     {editMode && aiSuggested ? (<button className="ticket-edit-button" onClick={() => undoAi()}>
                         Undo AI
