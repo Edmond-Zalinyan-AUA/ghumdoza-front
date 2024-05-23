@@ -7,6 +7,7 @@ import './HomePage.css';
 import { FaTimes } from 'react-icons/fa';
 import axios from "axios";
 import ProjectTicketsGrid from '../ProjectTicketsGrid/ProjectTicketsGrid'
+import TicketPage from '../TicketPage/TicketPage';
 
 
 const HomePage = ({ id, firstName, lastName, onLogout }) => {
@@ -21,6 +22,8 @@ const HomePage = ({ id, firstName, lastName, onLogout }) => {
   const [showCreateProjectForm, setShowCreateProjectForm] = useState(false);
   const [showCreateTicketForm, setShowCreateTicketForm] = useState(false);
   const [showProjectTicketGrid, setShowProjectTicketGrid] = useState(false);
+  const [showTicketPage, setShowTicketPage] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState();
 
   const [newProject, setNewProject] = useState({
     name: '',
@@ -37,7 +40,7 @@ const HomePage = ({ id, firstName, lastName, onLogout }) => {
     assigneeId: '',
     status: ''
   });
-  
+
   useEffect(() => {
     setTasks(tasks);
   }, [tasks]);
@@ -58,14 +61,20 @@ const HomePage = ({ id, firstName, lastName, onLogout }) => {
         setProjectOnTheGrid(project);
         setSelectedProject(project);
         setShowProjectTicketGrid(true);
+        setShowTicketPage(false);
       })
       .catch(error => console.error('Error fetching Tickets of the Project:', error));
 
   };
 
-  const handleTaskClick = (task) => {
-    // Trigger your API call here
-    console.log(`Clicked on task: ${task.headline}`);
+  const handleTaskClick = async (task) => {
+    await axios.get('http://localhost:8080/ticket/' + task.ticketId)
+      .then(response => {
+        setSelectedTicket(response.data);
+      })
+      .catch(error => console.error('Error fetching Ticket:', error));
+    setShowProjectTicketGrid(false);
+    setShowTicketPage(true);
   };
 
   const handleCloseClick = (formType) => {
@@ -315,6 +324,13 @@ const HomePage = ({ id, firstName, lastName, onLogout }) => {
         userAlltasks={tasks}
         setTicketsInMenu={setTasks}
       />} {/* Display Grid component if a project is selected */}
+      {showTicketPage && <TicketPage
+        userId={id}
+        ticket={selectedTicket}
+        setTicket={setSelectedTicket}
+        userAlltasks={tasks}
+        setTicketsInMenu={setTasks}
+      />}{/* Display Ticket page if a ticket is selected */}
 
     </div>
   );

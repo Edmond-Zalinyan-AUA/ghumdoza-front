@@ -1,0 +1,151 @@
+.ticket-headline,
+.ticket-assignee {
+  padding: 20px;
+  background-color: #3a3449;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+}
+
+.ticket-body {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+}
+
+.ticket-headline h1{
+  color: #f9f9f9;
+  font-size: 50px;
+}
+.ticket-assignee h1{
+  color: #f9f9f9;
+  font-size: 30px;
+}
+
+.ticket-container {
+  padding: 30px;
+  background-color: #3a3449;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+.ticket-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ticket-card {
+  min-width: 200px; /* Minimum width for ticket card */
+  max-width: 400px; /* Maximum width for ticket card */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Allow cards to grow */
+  word-wrap: break-word; /* Ensure long words break and wrap */
+}
+
+.ticket-card:hover {
+  transform: translateY(-5px);
+}
+
+.ticket-card h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.ticket-card p, 
+.participant-card p{
+  margin: 5px 0;
+  color: #666;
+}
+
+.ticket-card input,
+.ticket-card select,
+.ticket-card textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.ticket-card button,
+.participant-container button {
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.edit-button,
+.add-participant-button {
+  background-color: seagreen;
+}
+.add-participant-button{
+  max-width: 200px; 
+  min-width: 150px;
+  min-height: 40px;
+}
+.delete-button {
+  background-color: rgb(153, 0, 0);
+}
+
+.edit-button:hover,
+.add-participant-button:hover,
+.search-form button:hover  {
+  background-color: darkgreen;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  padding-right: 30px; /* Adjust the padding to accommodate the icon */
+}
+
+.input-with-icon .search-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust the right position as needed */
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input-with-icon .search-icon:hover {
+  color: darkgreen; /* Change color on hover if desired */
+}
+
+.search-form {
+  display: flex;
+  max-width: 50px;
+  max-height: 40px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.search-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-form button {
+  padding: 10px;
+  width: 100px;
+  border: none;
+  border-radius: 4px;
+  background-color: seagreen;
+  color: white;
+  cursor: pointer;
+}
