@@ -17,6 +17,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
     });
     const [participants, setParticipants] = useState([]);
     const [editMode, setEditMode] = useState(false);
+    const [aiSuggested, setAiSuggested] = useState(false);
 
     useEffect(() => {
         axios.get(`http://localhost:8080/user/${ticket.assigneeId}`)
@@ -52,6 +53,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
                     if (editableTicketData.assigneeId !== userId) {
                         setTicketsInMenu([...userAlltasks].filter(t => t.ticketId !== response.data.ticketId));
                     }
+                    setAiSuggested(false);
                 }
             })
             .catch(error => console.error('Error editing ticket:', error));
@@ -59,10 +61,26 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
         // Reset the editable state
         setEditMode(false);
         setEditableTicketData({});
+        setAiSuggested(false);
     };
 
     const enhanceWithAi = () => {
+        axios.get('http://localhost:8080/openai/task',
+            {
+                params: { text: ticket.body },
+            })
+            .then(response => {
+                console.log(response);
+                handleTicketEditInputChange('body', response.data);
+                setAiSuggested(true);
+            })
+            .catch(error => { console.log("error occured with AI: " + error) })
+    };
 
+    const undoAi = () => {
+        setEditMode(true);
+        setAiSuggested(false);
+        handleTicketEditInputChange('body', ticket.body);
     };
 
     const handleTicketEditInputChange = (field, value) => {
@@ -140,6 +158,9 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
                     </button>
                     {editMode ? (<button className="edit-button" onClick={() => enhanceWithAi()}>
                         Enhance with AI
+                    </button>) : ''}
+                    {editMode && aiSuggested ? (<button className="edit-button" onClick={() => undoAi()}>
+                        Undo AI
                     </button>) : ''}
                 </div>
             </div>
