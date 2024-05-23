@@ -130,9 +130,11 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
                     </>
                 )}
                 <br />
-                <button className="edit-button" onClick={() => editMode ? handleSaveClick() : handleEditClick()}>
-                    {editMode ? 'Save' : 'Edit'}
-                </button>
+                <div className='ticket-edit-button-container'>
+                    <button className="edit-button" onClick={() => editMode ? handleSaveClick() : handleEditClick()}>
+                        {editMode ? 'Save' : 'Edit'}
+                    </button>
+                </div>
             </div>
         </div>
 
