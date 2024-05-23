@@ -10,14 +10,11 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
     });
 
     useEffect(() => {
-        const fetchTicketAssignee = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/user/${ticket.assigneeId}`);
-                setTicketAssignee(response.data);
-            } catch (error) {
-                console.error('Error fetching ticket assignee:', error);
-            }
-        };
+        axios.get(`http://localhost:8080/user/${ticket.assigneeId}`)
+            .then(response => {
+                setTicketAssignee(response.data)
+            })
+            .catch(error => { console.error('Error fetching ticket assignee:', error); });
     }, [ticket]);
 
     return (
