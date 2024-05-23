@@ -50,8 +50,14 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
             .then(response => {
                 if (response.status === 200) {
                     setTicket(response.data);
-                    if (editableTicketData.assigneeId !== userId) {
+                    const updatedTicket = [...userAlltasks].filter(t => t.ticketId == response.data.ticketId);
+                    console.log(updatedTicket);
+                    if (updatedTicket.length != 0 && response.data.assigneeId != userId) {
                         setTicketsInMenu([...userAlltasks].filter(t => t.ticketId !== response.data.ticketId));
+                    }
+                    if (updatedTicket.length == 0 && response.data.assigneeId === userId) {
+                        console.log("avelcav?")
+                        setTicketsInMenu([...userAlltasks, response.data]);
                     }
                     setAiSuggested(false);
                 }

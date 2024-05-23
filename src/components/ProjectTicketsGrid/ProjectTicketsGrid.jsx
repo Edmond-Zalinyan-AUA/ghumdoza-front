@@ -75,11 +75,14 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
                 if (response.status === 200) {
                     const updatedTickets = tickets.filter(ticket => ticket.ticketId !== ticketId);
                     setTickets([...updatedTickets, response.data]);
-                    if (editableTicketData.assigneeId === userId) {
-                        setTicketsInMenu([...userAlltasks, response.data].filter(t => t.assigneeId === userId));
-                    }
-                    else {
+                    const updatedTicket = [...userAlltasks].filter(t => t.ticketId == response.data.ticketId);
+                    console.log(updatedTicket);
+                    if (updatedTicket.length != 0 && response.data.assigneeId != userId) {
                         setTicketsInMenu([...userAlltasks].filter(t => t.ticketId !== response.data.ticketId));
+                    }
+                    if (updatedTicket.length == 0 && response.data.assigneeId === userId) {
+                        console.log("avelcav?")
+                        setTicketsInMenu([...userAlltasks, response.data]);
                     }
                 }
             })
