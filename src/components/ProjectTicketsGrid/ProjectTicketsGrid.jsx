@@ -182,7 +182,7 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
             <div className="ticket-container">
                 <h2>Tickets</h2>
                 <br />
-                <div className="ticket-grid">
+                <div className="ticket-grid" onClick={console.log('clickeddd')}>
                     {tickets.map((ticket, index) => (
                         <div key={index} className="ticket-card">
                             {editableTicketId === ticket.ticketId ? (

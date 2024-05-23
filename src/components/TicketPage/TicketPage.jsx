@@ -159,13 +159,13 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
                 )}
                 <br />
                 <div className='ticket-edit-button-container'>
-                    <button className="edit-button" onClick={() => editMode ? handleSaveClick() : handleEditClick()}>
+                    <button className="ticket-edit-button" onClick={() => editMode ? handleSaveClick() : handleEditClick()}>
                         {editMode ? 'Save' : 'Edit'}
                     </button>
-                    {editMode ? (<button className="edit-button" onClick={() => enhanceWithAi()}>
+                    {editMode ? (<button className="ticekt-edit-button" onClick={() => enhanceWithAi()}>
                         Enhance with AI
                     </button>) : ''}
-                    {editMode && aiSuggested ? (<button className="edit-button" onClick={() => undoAi()}>
+                    {editMode && aiSuggested ? (<button className="ticket-edit-button" onClick={() => undoAi()}>
                         Undo AI
                     </button>) : ''}
                 </div>
