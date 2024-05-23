@@ -75,3 +75,7 @@
   font-size: 20px;
   border-radius: 4px;
 }
+
+.ticket-body p{
+  white-space: pre-line;
+}
