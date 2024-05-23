@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './TicketPage.css';
 import axios from 'axios';
 
-const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu }) => {
+const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
+    showProjectGrid,
+    setShowProjectTicketGrid,
+    showTicketPage,
+    setShowTicketPage,
+}) => {
 
     const [ticketAssignee, setTicketAssignee] = useState({
         id: '',
@@ -162,7 +167,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
                     <button className="ticket-edit-button" onClick={() => editMode ? handleSaveClick() : handleEditClick()}>
                         {editMode ? 'Save' : 'Edit'}
                     </button>
-                    {editMode ? (<button className="ticekt-edit-button" onClick={() => enhanceWithAi()}>
+                    {editMode ? (<button className="ticket-edit-button" onClick={() => enhanceWithAi()}>
                         Enhance with AI
                     </button>) : ''}
                     {editMode && aiSuggested ? (<button className="ticket-edit-button" onClick={() => undoAi()}>

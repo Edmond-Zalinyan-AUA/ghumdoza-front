@@ -323,6 +323,13 @@ const HomePage = ({ id, firstName, lastName, onLogout }) => {
         setTickets={setSelectedProjectTasks}
         userAlltasks={tasks}
         setTicketsInMenu={setTasks}
+        showProjectGrid={showProjectTicketGrid}
+        setShowProjectTicketGrid={setShowProjectTicketGrid}
+        showTicketPage={showTicketPage}
+        setShowTicketPage={setShowTicketPage}
+        // selectedTicket={selectedTicket}
+        setSelectedTicket={setSelectedTicket}
+        handleTaskClick={handleTaskClick}
       />} {/* Display Grid component if a project is selected */}
       {showTicketPage && <TicketPage
         userId={id}
@@ -330,6 +337,10 @@ const HomePage = ({ id, firstName, lastName, onLogout }) => {
         setTicket={setSelectedTicket}
         userAlltasks={tasks}
         setTicketsInMenu={setTasks}
+        showProjectGrid={showProjectTicketGrid}
+        setShowProjectTicketGrid={setShowProjectTicketGrid}
+        showTicketPage={showTicketPage}
+        setShowTicketPage={setShowTicketPage}
       />}{/* Display Ticket page if a ticket is selected */}
 
     </div>

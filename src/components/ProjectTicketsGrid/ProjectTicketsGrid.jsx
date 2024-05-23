@@ -2,7 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './ProjectTicketsGrid.css';
 import axios from 'axios';
 
-const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks, setTicketsInMenu }) => {
+const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks, setTicketsInMenu,
+    showProjectGrid,
+    setShowProjectTicketGrid,
+    showTicketPage,
+    setShowTicketPage,
+    // selectedTicket,
+    setSelectedTicket,
+    handleTaskClick
+}) => {
 
     const [participants, setParticipants] = useState([]);
     const [userMap, setUserMap] = useState({});
@@ -56,7 +64,8 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
         fetchAllUserInfos();
     }, [tickets]);
 
-    const handleEditClick = (ticketId) => {
+    const handleEditClick = (event, ticketId) => {
+        event.stopPropagation();
         const ticketToEdit = tickets.find(ticket => ticket.ticketId === ticketId);
         setEditableTicketId(ticketId);
         setEditableTicketData({
@@ -67,7 +76,8 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
         });
     };
 
-    const handleSaveClick = (ticketId) => {
+    const handleSaveClick = (event, ticketId) => {
+        event.stopPropagation();
         // Handle save functionality here
         // console.log('Saving ticket:', editableTicketData);
         axios.post('http://localhost:8080/ticket/update', editableTicketData)
@@ -76,12 +86,10 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
                     const updatedTickets = tickets.filter(ticket => ticket.ticketId !== ticketId);
                     setTickets([...updatedTickets, response.data]);
                     const updatedTicket = [...userAlltasks].filter(t => t.ticketId == response.data.ticketId);
-                    console.log(updatedTicket);
                     if (updatedTicket.length != 0 && response.data.assigneeId != userId) {
                         setTicketsInMenu([...userAlltasks].filter(t => t.ticketId !== response.data.ticketId));
                     }
                     if (updatedTicket.length == 0 && response.data.assigneeId === userId) {
-                        console.log("avelcav?")
                         setTicketsInMenu([...userAlltasks, response.data]);
                     }
                 }
@@ -93,7 +101,8 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
         setEditableTicketData({});
     };
 
-    const handleDeleteClick = (ticketId) => {
+    const handleDeleteClick = (event, ticketId) => {
+        event.stopPropagation();
         axios.delete('http://localhost:8080/ticket/delete/' + ticketId)
             .then(response => {
                 if (response.data === true) {
@@ -171,6 +180,14 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
             .catch(error => console.error('Error fetching participants:', error));
     }, [project]);
 
+    const handleTicketCardClick = (ticket) => {
+        console.log(ticket)
+        setShowProjectTicketGrid(false);
+        setShowTicketPage(true);
+        setSelectedTicket(ticket);
+        handleTaskClick(ticket);
+    };
+
     return (
         <div>
             <div className="project-headline">
@@ -182,10 +199,9 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
             <div className="ticket-container">
                 <h2>Tickets</h2>
                 <br />
-                <div className="ticket-grid" onClick={console.log('clickeddd')}>
+                <div className="ticket-grid">
                     {tickets.map((ticket, index) => (
-                        <div key={index} className="ticket-card">
-                            {editableTicketId === ticket.ticketId ? (
+                        <div key={index} className="ticket-card" onClick={() => handleTicketCardClick(ticket)}>                            {editableTicketId === ticket.ticketId ? (
                                 <>
                                     <h3>{ticket.headline}</h3>
                                     <select
@@ -196,7 +212,7 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
                                     >
                                         <option value="" disabled>Select assignee</option>
                                         {participants.map(participant => (
-                                            <option value={participant.user.id}>
+                                            <option key={participant.user.id} value={participant.user.id}>
                                                 {participant.user.firstName} {participant.user.lastName}
                                             </option>
                                         ))}
@@ -222,10 +238,14 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
                                     <p><strong>Body:</strong> {ticket.body}</p>
                                 </>
                             )}
-                            <button className="edit-button" onClick={() => editableTicketId === ticket.ticketId ? handleSaveClick(ticket.ticketId) : handleEditClick(ticket.ticketId)}>
+                            <button
+                                className="edit-button"
+                                onClick={(event) => editableTicketId === ticket.ticketId ? handleSaveClick(event, ticket.ticketId) : handleEditClick(event, ticket.ticketId)}>
                                 {editableTicketId === ticket.ticketId ? 'Save' : 'Edit'}
                             </button>
-                            <button className="delete-button" onClick={() => handleDeleteClick(ticket.ticketId)}>
+                            <button
+                                className="delete-button"
+                                onClick={(event) => handleDeleteClick(event, ticket.ticketId)}>
                                 Delete
                             </button>
                         </div>
