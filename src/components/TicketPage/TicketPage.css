@@ -21,9 +21,8 @@
   max-width: 1000px;
 }
 
-.ticket-edit-button-container{
-  align-content: right;
-}
+/* .ticket-edit-button-container{
+} */
 
 .ticket-headline h1{
   color: #f9f9f9;
@@ -54,8 +53,11 @@
   cursor: pointer;
   width: 100%;
   margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   max-width: 200px;
   min-width: 200px;
+  float:right;
 }
 
 .delete-button {

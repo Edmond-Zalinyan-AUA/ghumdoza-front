@@ -61,6 +61,10 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
         setEditableTicketData({});
     };
 
+    const enhanceWithAi = () => {
+
+    };
+
     const handleTicketEditInputChange = (field, value) => {
         setEditableTicketData(prevState => ({
             ...prevState,
@@ -134,6 +138,9 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu 
                     <button className="edit-button" onClick={() => editMode ? handleSaveClick() : handleEditClick()}>
                         {editMode ? 'Save' : 'Edit'}
                     </button>
+                    {editMode ? (<button className="edit-button" onClick={() => enhanceWithAi()}>
+                        Enhance with AI
+                    </button>) : ''}
                 </div>
             </div>
         </div>
