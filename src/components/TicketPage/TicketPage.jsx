@@ -76,6 +76,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
     };
 
     const enhanceWithAi = () => {
+        handleTicketEditInputChange('body', 'Generating, please wait....');
         axios.get('http://localhost:8080/openai/task',
             {
                 params: { text: ticket.body },
