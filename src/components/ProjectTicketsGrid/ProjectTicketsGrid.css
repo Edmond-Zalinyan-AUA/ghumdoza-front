@@ -49,6 +49,8 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   flex: 1; /* Allow cards to grow */
   word-wrap: break-word; /* Ensure long words break and wrap */
+  display: flex;
+  flex-direction: column;
 }
 
 .participant-card {
@@ -103,6 +105,7 @@
   cursor: pointer;
   width: 100%;
   margin-bottom: 10px;
+  margin-top: auto;
 }
 
 .edit-button,
@@ -167,4 +170,11 @@
   background-color: seagreen;
   color: white;
   cursor: pointer;
+}
+
+.button-container{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100px; 
 }

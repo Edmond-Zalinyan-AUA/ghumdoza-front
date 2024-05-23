@@ -28,7 +28,9 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
     const [isNewParticipantFound, setIsNewParticipantFound] = useState(true);
     const [isNewParticipantRoleSelected, setIsNewParticipantRoleSelected] = useState(true);
     const [participantDeletionAllowed, setParticipantDeletionAllowed] = useState(true);
-
+    const TruncatedText = ({ text, maxLength }) => {
+        return <p className="truncated-text">{text.length > maxLength ? text.slice(0, maxLength) + '...' : text}</p>;
+    };
 
     useEffect(() => {
         setTickets(tickets);
@@ -202,52 +204,54 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
                 <div className="ticket-grid">
                     {tickets.map((ticket, index) => (
                         <div key={index} className="ticket-card" onClick={() => handleTicketCardClick(ticket)}>                            {editableTicketId === ticket.ticketId ? (
-                                <>
-                                    <h3>{ticket.headline}</h3>
-                                    <select
-                                        name="assignee"
-                                        value={editableTicketData.assigneeId}
-                                        onChange={(e) => handleTicketEditInputChange('assigneeId', e.target.value,)}
-                                        required
-                                    >
-                                        <option value="" disabled>Select assignee</option>
-                                        {participants.map(participant => (
-                                            <option key={participant.user.id} value={participant.user.id}>
-                                                {participant.user.firstName} {participant.user.lastName}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <select
-                                        value={editableTicketData.status}
-                                        onChange={(e) => handleTicketEditInputChange('status', e.target.value)}
-                                    >
-                                        <option value="TO_DO">TO_DO</option>
-                                        <option value="IN_PROGRESS">IN_PROGRESS</option>
-                                        <option value="DONE">DONE</option>
-                                    </select>
-                                    <textarea
-                                        value={editableTicketData.body}
-                                        onChange={(e) => handleTicketEditInputChange('body', e.target.value)}
-                                    />
-                                </>
-                            ) : (
-                                <>
-                                    <h3>{ticket.headline}</h3>
-                                    <p><strong>Assignee:</strong> {userMap[ticket.assigneeId]?.firstName} {userMap[ticket.assigneeId]?.lastName}</p>
-                                    <p><strong>Status:</strong> {ticket.status}</p>
-                                    <p><strong>Body:</strong> {ticket.body}</p>
-                                </>
-                            )}
-                            <button
-                                className="edit-button"
-                                onClick={(event) => editableTicketId === ticket.ticketId ? handleSaveClick(event, ticket.ticketId) : handleEditClick(event, ticket.ticketId)}>
-                                {editableTicketId === ticket.ticketId ? 'Save' : 'Edit'}
-                            </button>
-                            <button
-                                className="delete-button"
-                                onClick={(event) => handleDeleteClick(event, ticket.ticketId)}>
-                                Delete
-                            </button>
+                            <>
+                                <h3>{ticket.headline}</h3>
+                                <select
+                                    name="assignee"
+                                    value={editableTicketData.assigneeId}
+                                    onChange={(e) => handleTicketEditInputChange('assigneeId', e.target.value,)}
+                                    required
+                                >
+                                    <option value="" disabled>Select assignee</option>
+                                    {participants.map(participant => (
+                                        <option key={participant.user.id} value={participant.user.id}>
+                                            {participant.user.firstName} {participant.user.lastName}
+                                        </option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={editableTicketData.status}
+                                    onChange={(e) => handleTicketEditInputChange('status', e.target.value)}
+                                >
+                                    <option value="TO_DO">TO_DO</option>
+                                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                    <option value="DONE">DONE</option>
+                                </select>
+                                <textarea
+                                    value={editableTicketData.body}
+                                    onChange={(e) => handleTicketEditInputChange('body', e.target.value)}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <h3>{ticket.headline}</h3>
+                                <p><strong>Assignee:</strong> {userMap[ticket.assigneeId]?.firstName} {userMap[ticket.assigneeId]?.lastName}</p>
+                                <p><strong>Status:</strong> {ticket.status}</p>
+                                <TruncatedText text={ticket.body} maxLength={300} />
+                            </>
+                        )}
+                            <div className='button-container'>
+                                <button
+                                    className="edit-button"
+                                    onClick={(event) => editableTicketId === ticket.ticketId ? handleSaveClick(event, ticket.ticketId) : handleEditClick(event, ticket.ticketId)}>
+                                    {editableTicketId === ticket.ticketId ? 'Save' : 'Edit'}
+                                </button>
+                                <button
+                                    className="delete-button"
+                                    onClick={(event) => handleDeleteClick(event, ticket.ticketId)}>
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
