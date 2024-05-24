@@ -183,11 +183,13 @@ const ProjectTicketsGrid = ({ userId, project, tickets, setTickets, userAlltasks
     }, [project]);
 
     const handleTicketCardClick = (ticket) => {
-        console.log(ticket)
-        setShowProjectTicketGrid(false);
-        setShowTicketPage(true);
-        setSelectedTicket(ticket);
-        handleTaskClick(ticket);
+        if (editableTicketId != ticket.ticketId) {
+            console.log(ticket)
+            setShowProjectTicketGrid(false);
+            setShowTicketPage(true);
+            setSelectedTicket(ticket);
+            handleTaskClick(ticket);
+        }
     };
 
     return (
