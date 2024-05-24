@@ -23,6 +23,9 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
     const [participants, setParticipants] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const [aiSuggested, setAiSuggested] = useState(false);
+    const [EnhanceInProgress, setEnhanceInProgress] = useState(false);
+    const [CheckInProgress, setCheckInProgress] = useState(false);
+
 
     useEffect(() => {
         axios.get(`http://localhost:8080/user/${ticket.assigneeId}`)
@@ -75,11 +78,11 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
         setAiSuggested(false);
     };
 
-    const enhanceWithAi = () => {
-        handleTicketEditInputChange('body', 'Generating, please wait....');
-        axios.get('http://localhost:8080/openai/task',
+    const enhanceWithAi = async () => {
+        setEnhanceInProgress(true);
+        await axios.get('http://localhost:8080/openai/task',
             {
-                params: { text: ticket.body },
+                params: { text: editableTicketData.body },
             })
             .then(response => {
                 console.log(response);
@@ -87,13 +90,14 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
                 setAiSuggested(true);
             })
             .catch(error => { console.log("error occured with AI: " + error) })
+        setEnhanceInProgress(false);
     };
 
-    const grammarCheckWithAi = () => {
-        handleTicketEditInputChange('body', 'Generating, please wait....');
-        axios.get('http://localhost:8080/openai/grammar',
+    const grammarCheckWithAi = async () => {
+        setCheckInProgress(true);
+        await axios.get('http://localhost:8080/openai/grammar',
             {
-                params: { text: ticket.body },
+                params: { text: editableTicketData.body },
             })
             .then(response => {
                 console.log(response);
@@ -101,6 +105,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
                 setAiSuggested(true);
             })
             .catch(error => { console.log("error occured with AI: " + error) })
+        setCheckInProgress(false);
     };
 
     const undoAi = () => {
@@ -183,10 +188,10 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
                         {editMode ? 'Save' : 'Edit'}
                     </button>
                     {editMode ? (<button className="ticket-edit-button" onClick={() => enhanceWithAi()}>
-                        AI Enhance
+                        {EnhanceInProgress ? 'Generating...' : 'AI Enhance'}
                     </button>) : ''}
                     {editMode ? (<button className="ticket-edit-button" onClick={() => grammarCheckWithAi()}>
-                        AI Grammar Check
+                        {CheckInProgress ? 'Checking...' : 'AI Grammar Check'}
                     </button>) : ''}
                     {editMode && aiSuggested ? (<button className="ticket-edit-button" onClick={() => undoAi()}>
                         Undo AI
