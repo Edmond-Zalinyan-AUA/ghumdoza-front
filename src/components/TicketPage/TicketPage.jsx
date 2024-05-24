@@ -25,6 +25,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
     const [aiSuggested, setAiSuggested] = useState(false);
     const [EnhanceInProgress, setEnhanceInProgress] = useState(false);
     const [CheckInProgress, setCheckInProgress] = useState(false);
+    const [preAiChanges, setPreAiChanges] = useState(false);
 
 
     useEffect(() => {
@@ -51,6 +52,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
             body: ticket.body,
             assigneeId: ticket.assigneeId
         });
+        setPreAiChanges(ticket.body);
     };
 
     const handleSaveClick = () => {
@@ -76,9 +78,11 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
         setEditMode(false);
         setEditableTicketData({});
         setAiSuggested(false);
+        setPreAiChanges();
     };
 
     const enhanceWithAi = async () => {
+        setPreAiChanges(editableTicketData.body)
         setEnhanceInProgress(true);
         await axios.get('http://localhost:8080/openai/task',
             {
@@ -94,6 +98,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
     };
 
     const grammarCheckWithAi = async () => {
+        setPreAiChanges(editableTicketData.body)
         setCheckInProgress(true);
         await axios.get('http://localhost:8080/openai/grammar',
             {
@@ -111,7 +116,7 @@ const TicketPage = ({ userId, ticket, setTicket, userAlltasks, setTicketsInMenu,
     const undoAi = () => {
         setEditMode(true);
         setAiSuggested(false);
-        handleTicketEditInputChange('body', ticket.body);
+        handleTicketEditInputChange('body', preAiChanges);
     };
 
     const handleTicketEditInputChange = (field, value) => {
